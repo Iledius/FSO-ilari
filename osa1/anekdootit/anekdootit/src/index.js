@@ -7,15 +7,46 @@ const Button = ({ onClick, text }) => (
   </button>
 )
 
+const Anecdote = ({text, points}) => {
+  return (
+    <div>    
+      <div>
+        {text}
+      </div>
+      <div>
+        has {points||0} votes
+      </div>
+    </div>    
+  )
+}
+
 const App = (props) => {
   const [selected, setSelected] = useState(0)
+  const [points, addPoints] = useState({})
+  const [topPost, setTopPost] = useState(0)
 
-  const handleNextClick = () => {setSelected(selected + 1)}
+  const handleNextClick = () => {
+    setSelected(Math.round(Math.random()*anecdotes.length)-1)
+  }
 
+  const handleUpVoteClick = () => {
+    const selectedPoints = points[selected]||0
+
+    addPoints({...points, [selected]:selectedPoints+ 1})
+
+    if (selectedPoints + 1 > points[topPost] || !points[topPost])  {
+      setTopPost(selected)
+    }
+  }
+  
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
+      <h1>Anecdote of the day</h1>
+      <Anecdote text={props.anecdotes[selected]} points={points[selected]}/>
       <Button onClick={handleNextClick} text='next anectode' />
+      <Button onClick={handleUpVoteClick} text='vote' />
+      <h1>Anecdote with most votes</h1>
+      <Anecdote text={props.anecdotes[topPost]} points={points[topPost]}/>    
     </div>
   )
 }
