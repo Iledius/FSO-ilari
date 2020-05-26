@@ -8,9 +8,6 @@ const Person = (props) =>{
   )
 }
 
-
-
-
 const App = () => {
   const [ persons, setPersons ] = useState([
     { name: 'Arto Hellas' }
@@ -23,7 +20,14 @@ const App = () => {
     const personObject = {
       name: newName
     }
-    setPersons(persons.concat(personObject))
+    const exists = 
+    persons.filter(person=>person.name===newName)
+
+    if(!exists.length)
+      setPersons(persons.concat(personObject))
+    else
+      alert(`${newName} is already added to phonebook`)
+    
     setNewName('')
   }
 
