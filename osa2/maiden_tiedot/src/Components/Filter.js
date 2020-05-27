@@ -7,8 +7,7 @@ const Filter = ({ filter, setFilter }) => {
 
   return (
     <div>
-      Find countries: {" "}
-      <input value={filter} onChange={handleFilterChange} />
+      Find countries: <input value={filter} onChange={handleFilterChange} />
     </div>
   );
 };
