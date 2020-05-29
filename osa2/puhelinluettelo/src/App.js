@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Filter from "./Components/Filter";
 import Person from "./Components/Person";
 import PersonForm from "./Components/PersonForm";
+import personService from "./Services/Persons";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,10 +11,8 @@ const App = () => {
   const [filterName, setFilterName] = useState("");
 
   useEffect(() => {
-    axios
-      .get("http://localhost:3001/persons")
-      .then((response) => {
-      setPersons(response.data);
+    personService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
 
@@ -30,19 +28,44 @@ const App = () => {
     };
 
     const exists = persons.filter((person) => person.name === newName);
-    if (!exists.length) setPersons(persons.concat(personObject));
-    else alert(`${newName} is already added to phonebook`);
+    if (!exists.length) {
+      personService.create(personObject).then((returnedPerson) => {
+        setPersons(persons.concat(returnedPerson));
+      });
+    } else {
+      const replaceOld = window.confirm(
+        `${newName} is already added to phonebook, replace the old number with a new one?`
+      );
+      if (replaceOld) {
+        const oldPerson = exists[0];
+        const changedPerson = { ...oldPerson, number: newNumber };
+        personService
+          .update(oldPerson.id, changedPerson)
+          .then((returnedPerson) => {
+            setPersons(
+              persons.map((person) =>
+                person.id !== oldPerson.id ? person : returnedPerson
+              )
+            );
+          });
+      }
+    }
 
     setNewName("");
     setNewNumber("");
   };
 
-  const handleNameChange = (event) => {
-    setNewName(event.target.value);
-  };
+  const handleNameChange = (event) => setNewName(event.target.value);
 
-  const handleNumberChange = (event) => {
-    setNewNumber(event.target.value);
+  const handleNumberChange = (event) => setNewNumber(event.target.value);
+
+  const removePerson = (personObject) => {
+    personService.remove(personObject).then((returnedPersons) => {
+      setPersons(persons);
+      personService.getAll().then((initialPersons) => {
+        setPersons(initialPersons);
+      });
+    });
   };
 
   return (
@@ -57,7 +80,13 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Person personsToShow={personsToShow} />
+      {personsToShow.map((person) => (
+        <Person
+          key={person.id}
+          person={person}
+          removePerson={() => removePerson(person.id)}
+        />
+      ))}
     </div>
   );
 };
