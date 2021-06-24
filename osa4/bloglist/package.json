@@ -10,6 +10,7 @@
   "author": "Ilari Räisänen",
   "license": "MIT",
   "devDependencies": {
+    "eslint": "^7.29.0",
     "nodemon": "^2.0.7"
   },
   "dependencies": {

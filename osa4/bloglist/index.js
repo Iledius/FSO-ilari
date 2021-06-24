@@ -1,9 +1,13 @@
 const app = require("./app")
-const http = require("http")
 const config = require("./utils/config")
+
+/*
+const http = require("http")
 const logger = require("./utils/logger")
 
-const PORT = 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+const server = http.createServer(app)
+*/
+
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })
