@@ -5,12 +5,16 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "lint": "eslint .",
+    "fix": "eslint --fix",
+    "test": "jest --verbose"
   },
   "author": "Ilari Räisänen",
   "license": "MIT",
   "devDependencies": {
     "eslint": "^7.29.0",
+    "jest": "^27.0.5",
     "nodemon": "^2.0.7"
   },
   "dependencies": {
@@ -18,5 +22,8 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "mongoose": "^5.12.14"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }
