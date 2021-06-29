@@ -1,9 +1,10 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
-
+// laita mongoon users kun netti palaa
 {
   "title": "String",
   "author": "String",
   "url": "String",
-  "likes": 12
+  "likes": 12,
+  "userId": "60db54984ba1672efcff392a"
 }
