@@ -90,7 +90,6 @@ describe("most liked", () => {
 describe("most blog posts", () => {
   test("author with most posts and amount of posts, testlist used", () => {
     const result = listHelper.mostBlogs(blogs)
-    console.log(result)
     expect(result).toEqual({ "Robert C. Martin": 3 })
   })
 })

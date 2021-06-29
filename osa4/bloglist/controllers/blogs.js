@@ -10,9 +10,19 @@ blogsRouter.get("/", (request, response) => {
 })
 
 blogsRouter.post("/", async (request, response) => {
-  const blog = new Blog(request.body)
+  const b = request.body._doc
+  if (!b.title && !b.url) {
+    response.send(400).end()
+  }
 
-  const savedBlog = blog.save()
+  const blog = new Blog({
+    title: b.title,
+    author: b.author,
+    url: b.url,
+    likes: b.likes || 0,
+  })
+
+  const savedBlog = await blog.save()
   response.json(savedBlog)
 })
 
