@@ -7,7 +7,8 @@ blogsRouter.get("/", async (request, response) => {
 })
 
 blogsRouter.post("/", async (request, response) => {
-  const body = request.body._doc
+  const body = request.body._doc ? request.body._doc : request.body
+
   if (!body.title && !body.url) {
     response.send(400).end()
   }
@@ -38,7 +39,7 @@ blogsRouter.delete("/:id", async (request, response) => {
 })
 
 blogsRouter.put("/:id", async (request, response) => {
-  const body = request.body._doc
+  const body = request.body._doc ? request.body._doc : request.body
 
   const blog = new Blog({
     title: body.title,

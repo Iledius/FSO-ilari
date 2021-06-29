@@ -68,6 +68,26 @@ describe("adding blogs", () => {
     expect(contents).toContain(newBlog.title)
   })
 })
+
+describe("updating blogs", () => {
+  test("updating a blog with valid id", async () => {
+    const allBlogs = await helper.blogsInDb()
+    const blog = new Blog({
+      title: "updated",
+      author: "updated",
+      url: "test.com",
+      likes: 123,
+    })
+    await api.put(`/api/blogs/:${allBlogs[0].id}`).send(blog).expect(204)
+  })
+  test("adding one like", async () => {
+    const allBlogs = await helper.blogsInDb()
+    let blog = allBlogs[0]
+    blog.likes += 1
+    await api.put(`/api/blogs/:${blog.id}`).send(blog).expect(204)
+  })
+})
+
 afterAll(() => {
   mongoose.connection.close()
 })
