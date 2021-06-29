@@ -1,6 +1,6 @@
-const listHelper = require("../utils/list_helper")
+const Blog = require("../models/blog")
 
-const blogs = [
+const initialBlogs = [
   {
     _id: "5a422a851b54a676234d17f7",
     title: "React patterns",
@@ -50,47 +50,22 @@ const blogs = [
     __v: 0,
   },
 ]
-const oneBlog = [
-  {
-    _id: "5a422bc61b54a676234d17fc",
-    title: "Type wars",
-    author: "Robert C. Martin",
-    url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
-    likes: 2,
-    __v: 0,
-  },
-]
-const mostLikedPost = {
-  _id: "5a422b3a1b54a676234d17f9",
-  title: "Canonical string reduction",
-  author: "Edsger W. Dijkstra",
-  url: "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-  likes: 12,
-  __v: 0,
+
+const nonExistingId = async () => {
+  const blog = new Blog({ content: "willremovethissoon", date: new Date() })
+  await blog.save()
+  await blog.remove()
+
+  return blog._id.toString()
 }
 
-describe("total likes", () => {
-  test("when list has many blogs, equals the likes of those", () => {
-    const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(36)
-  })
-  test("when list has one blog, equals the likes of that", () => {
-    const result = listHelper.totalLikes(oneBlog)
-    expect(result).toBe(2)
-  })
-})
+const blogsInDb = async () => {
+  const blogs = await Blog.find({})
+  return blogs.map((blog) => blog.toJSON())
+}
 
-describe("most liked", () => {
-  test("likes most liked post has, all testblogs", () => {
-    const result = listHelper.favoriteBlog(blogs)
-    expect(result).toEqual(mostLikedPost)
-  })
-})
-
-describe("most blog posts", () => {
-  test("author with most posts and amount of posts, testlist used", () => {
-    const result = listHelper.mostBlogs(blogs)
-    console.log(result)
-    expect(result).toEqual({ "Robert C. Martin": 3 })
-  })
-})
+module.exports = {
+  initialBlogs,
+  nonExistingId,
+  blogsInDb,
+}

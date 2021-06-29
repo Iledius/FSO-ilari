@@ -22,8 +22,9 @@ const mostBlogs = (blogs) => {
       ? postsPerPerson[blog.author] + 1
       : 1
   })
-  console.log(postsPerPerson)
+
   let maxAuthor
+
   Object.keys(postsPerPerson).reduce(
     (prev, current) =>
       (maxAuthor =

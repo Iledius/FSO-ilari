@@ -9,17 +9,20 @@ blogsRouter.get("/", (request, response) => {
     .catch((error) => console.error(error))
 })
 
-blogsRouter.post("/", (request, response) => {
+blogsRouter.post("/", async (request, response) => {
   const blog = new Blog(request.body)
 
-  blog
-    .save()
-    .then((result) => {
-      response.status(201).json(result)
-    })
-    .catch((error) => {
-      console.error(error)
-    })
+  const savedBlog = blog.save()
+  response.json(savedBlog)
+})
+
+blogsRouter.get("/:id", async (request, response) => {
+  const blog = await Blog.findById(request.params.id)
+  if (blog) {
+    response.json(blog)
+  } else {
+    response.status(404).end()
+  }
 })
 
 module.exports = blogsRouter
