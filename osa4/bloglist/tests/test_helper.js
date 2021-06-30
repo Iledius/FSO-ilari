@@ -1,6 +1,10 @@
 const Blog = require("../models/blog")
 const User = require("../models/user")
 
+const supertest = require("supertest")
+const app = require("../app")
+const api = supertest(app)
+
 const initialBlogs = [
   {
     _id: "5a422a851b54a676234d17f7",
@@ -52,12 +56,55 @@ const initialBlogs = [
   },
 ]
 
+const initialUsers = [
+  {
+    username: "morethanfive1",
+    name: "Teemu Teekkari",
+    password: "1234567",
+  },
+  {
+    username: "morethanfive2",
+    name: "Teemu Teekkari",
+    password: "1234567",
+  },
+  {
+    username: "morethanfive3",
+    name: "Teemu Teekkari",
+    password: "1234567",
+  },
+  {
+    username: "morethanfive4",
+    name: "Teemu Teekkari",
+    password: "1234567",
+  },
+  {
+    username: "morethanfive5",
+    name: "Teemu Teekkari",
+    password: "1234567",
+  },
+]
+
 const nonExistingId = async () => {
   const blog = new Blog({ content: "willremovethissoon", date: new Date() })
   await blog.save()
   await blog.remove()
 
   return blog._id.toString()
+}
+
+const login = async () => {
+  const logInInfo = {
+    username: initialUsers[0].username,
+    password: initialUsers[0].password,
+  }
+
+  const result = await api
+    .post("/api/login")
+    .send(logInInfo)
+    .expect(200)
+    .expect("Content-Type", /application\/json/)
+
+  return result.body.token
 }
 
 const blogsInDb = async () => {
@@ -72,7 +119,9 @@ const usersInDb = async () => {
 
 module.exports = {
   initialBlogs,
+  initialUsers,
   nonExistingId,
   blogsInDb,
   usersInDb,
+  login,
 }
