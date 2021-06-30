@@ -1,10 +1,10 @@
 POST http://localhost:3003/api/blogs
 content-type: application/json
-// laita mongoon users kun netti palaa
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFhYWFhIiwiaWQiOiI2MGRjMGE2YjhiZjYxOTJjNzQxZmFiZGIiLCJpYXQiOjE2MjUwMzM1NjR9._z11_lj64B5HuYkDZUuaHtvduDI1KBJhJfqxdP7hwwU
+
 {
-  "title": "String",
-  "author": "String",
+  "title": "asd",
+  "author": "aaaaa",
   "url": "String",
-  "likes": 12,
-  "userId": "60db54984ba1672efcff392a"
+  "likes": 12
 }
