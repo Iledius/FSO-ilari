@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react"
 import Blog from "./components/Blog"
 import blogService from "./services/blogs"
 import loginService from "./services/login"
+import Notification from "./components/Notification"
+import LoginForm from "./components/LoginForm"
+import BlogForm from "./components/BlogForm"
+import Togglable from "./components/Togglable"
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [errorMessage, setErrorMessage] = useState("")
+  const [errorMessage, setErrorMessage] = useState(null)
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
   const [title, setTitle] = useState("")
   const [author, setAuthor] = useState("")
   const [url, setUrl] = useState("")
+  const [blogsVisible, setBlogsVisible] = useState(true)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -28,39 +33,42 @@ const App = () => {
 
   const handleLogin = async (event) => {
     try {
-      event.preventDefault()
-      const user = await loginService.login({ username, password })
-
-      window.localStorage.setItem("loggedBlogappUser", JSON.stringify(user))
-
-      setUser(user)
-      setUsername("")
-      setPassword("")
-    } catch (exception) {
-      setErrorMessage("Wrong credentials")
-
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
 
-      console.log("logging in with", username, password)
+      event.preventDefault()
+      const user = await loginService.login({ username, password })
+
+      setUser(user)
+      setUsername("")
+      setPassword("")
+      setErrorMessage("logged in!")
+    } catch (exception) {
+      setErrorMessage("Wrong credentials")
     }
+
+    console.log("logging in with", username, password)
+  }
+
+  const handleLogOut = () => {
+    setUser(null)
+    window.localStorage.removeItem("loggedBlogappUser")
   }
 
   const handleSubmit = () => {
     try {
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
       blogService.create({
         title: title,
         author: author,
         url: url,
       })
+      setErrorMessage("note added")
     } catch {}
-    setErrorMessage()
-  }
-
-  const errStyle = {
-    margin: "15px",
-    border: "5px solid red",
+    setErrorMessage("submit failed!")
   }
 
   const mainStyle = {
@@ -101,65 +109,35 @@ const App = () => {
     )
   }
 
-  const blogForm = () => {
-    return (
-      <div>
-        <div>
-          <p1>title: </p1>
-          <input
-            type="title"
-            value={title}
-            name="title"
-            onChange={({ target }) => setTitle(target.value)}
-          />
-        </div>
-        <div>
-          <p1>Author: </p1>
-          <input
-            type="author"
-            value={author}
-            name="author"
-            onChange={({ target }) => setAuthor(target.value)}
-          />
-        </div>
-        <div>
-          <p1>url: </p1>
-          <input
-            type="url"
-            value={url}
-            name="url"
-            onChange={({ target }) => setUrl(target.value)}
-          />
-        </div>
-
-        <button type="submit" onClick={() => handleSubmit()}>
-          Submit
-        </button>
-        <h2>blogs</h2>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} />
-        ))}
-      </div>
-    )
-  }
-
   return (
     <div>
       <h1> BlogList </h1>
-      <div
-        style={{
-          ...errStyle,
-          visibility: errorMessage ? "visible" : "hidden",
-        }}
-      >
-        <h1>{errorMessage}</h1>
-      </div>
+      <Notification msg={errorMessage} />
       {user === null ? (
         loginForm()
       ) : (
         <div>
           <p>{user.name} logged-in</p>
-          {blogForm()}
+          <button type="button" onClick={() => handleLogOut()}>
+            log out
+          </button>
+          <Togglable buttonLabel={"add a blog"}>
+            <BlogForm
+              blogsVisible={blogsVisible}
+              setBlogsVisible={setBlogsVisible}
+              title={title}
+              setTitle={setTitle}
+              author={author}
+              setAuthor={setAuthor}
+              url={url}
+              setUrl={setUrl}
+              handleSubmit={handleSubmit}
+            />
+          </Togglable>
+          <h2>blogs</h2>
+          {blogs.map((blog) => (
+            <Blog key={blog.id} blog={blog} />
+          ))}
         </div>
       )}
     </div>
