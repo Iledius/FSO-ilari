@@ -31,9 +31,3 @@ const LoginForm = ({
 }
 
 export default LoginForm
-
-//handleSubmit={handleSubmit()}
-//  handleUsernameChange={handleUsernameChange()}
-//handlePasswordChange={handlePasswordChange()}
-//username={username}
-//password={setPassword()}

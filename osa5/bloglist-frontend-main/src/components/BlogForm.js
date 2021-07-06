@@ -1,8 +1,6 @@
 import React from "react"
 
 const BlogForm = ({
-  blogsVisible,
-  setBlogsVisible,
   title,
   setTitle,
   author,
@@ -11,18 +9,6 @@ const BlogForm = ({
   setUrl,
   handleSubmit,
 }) => {
-  if (!blogsVisible)
-    return (
-      <div>
-        <button
-          onClick={() => {
-            setBlogsVisible(true)
-          }}
-        >
-          create new blog
-        </button>
-      </div>
-    )
   return (
     <div>
       <div>
