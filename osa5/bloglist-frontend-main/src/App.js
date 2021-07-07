@@ -77,7 +77,7 @@ const App = () => {
       })
       setErrorMessage("note added")
       blogFormRef.current.toggleVisibility()
-    } catch {
+    } catch (error) {
       setErrorMessage("submit failed!")
     }
   }
@@ -135,7 +135,7 @@ const App = () => {
           <h2>blogs</h2>
           {blogs.map((blog) => (
             <Blog
-              key={blog._id}
+              key={blog.id}
               blog={blog}
               addLike={addLike}
               removePost={removePost}

@@ -7,7 +7,7 @@ const blogStyles = {
   padding: "10px",
 }
 
-const Blog = ({ blog, key, addLike, removePost }) => (
+const Blog = ({ blog, addLike, removePost }) => (
   <div style={blogStyles}>
     {blog.title} {blog.author}
     <Togglable buttonLabel="view">
