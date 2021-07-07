@@ -64,14 +64,13 @@ const App = () => {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      blogFormRef.current.toggleVisibility()
       blogService.create({
         title: title,
         author: author,
         url: url,
       })
       setErrorMessage("note added")
-      setBlogsVisible(false)
+      blogFormRef.current.toggleVisibility()
     } catch {
       setErrorMessage("submit failed!")
     }
