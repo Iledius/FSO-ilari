@@ -20,7 +20,13 @@ const App = () => {
   const blogFormRef = useRef()
 
   useEffect(() => {
-    blogService.getAll().then((blogs) => setBlogs(blogs))
+    blogService.getAll().then((blogs) =>
+      setBlogs(
+        blogs.sort((b1, b2) => {
+          return b2.likes - b1.likes
+        })
+      )
+    )
   }, [])
 
   useEffect(() => {
@@ -76,6 +82,27 @@ const App = () => {
     }
   }
 
+  const addLike = async (id) => {
+    try {
+      let blog = await blogService.getItem(id)
+      blog.data.likes += 1
+      blogService.update(id, blog.data)
+    } catch (err) {
+      setErrorMessage("like failed!")
+    }
+  }
+  const removePost = async (id, title) => {
+    try {
+      if (window.confirm(`Remove blog: ${title}?`))
+        await blogService.removeItem(id)
+    } catch (err) {
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
+      setErrorMessage("remove failed!")
+    }
+  }
+
   return (
     <div>
       <h1> BlogList </h1>
@@ -107,7 +134,12 @@ const App = () => {
           </Togglable>
           <h2>blogs</h2>
           {blogs.map((blog) => (
-            <Blog key={blog.id} blog={blog} />
+            <Blog
+              key={blog._id}
+              blog={blog}
+              addLike={addLike}
+              removePost={removePost}
+            />
           ))}
         </div>
       )}
