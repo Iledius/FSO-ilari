@@ -15,10 +15,17 @@ const Blog = ({ blog, addLike, removePost }) => {
         <div id="urlDiv">{blog.url}</div>
         <div id="likeDiv">
           likes {blog.likes}
-          <button onClick={() => addLike(blog._id)}>like</button>
+          <button id="likeButton" onClick={() => addLike(blog._id)}>
+            like
+          </button>
         </div>
         <div>{blog.author}</div>
-        <button onClick={() => removePost(blog._id, blog.title)}>remove</button>
+        <button
+          id="removeButton"
+          onClick={() => removePost(blog._id, blog.title)}
+        >
+          remove
+        </button>
       </Togglable>
     </div>
   )

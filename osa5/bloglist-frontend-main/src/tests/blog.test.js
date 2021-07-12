@@ -3,10 +3,6 @@ import "@testing-library/jest-dom/extend-expect"
 import { render, fireEvent, cleanup } from "@testing-library/react"
 import Blog from "../components/Blog"
 
-const testFunc = () => {
-  return "as"
-}
-
 describe("<Blog/>", () => {
   let component
   const mockHandler = jest.fn()
@@ -19,7 +15,7 @@ describe("<Blog/>", () => {
       likes: 555,
       _id: "id12345",
     }
-    component = render(<Blog addLike={testFunc} blog={blog} />)
+    component = render(<Blog addLike={mockHandler} blog={blog} />)
   })
 
   afterEach(cleanup)
@@ -45,8 +41,8 @@ describe("<Blog/>", () => {
     expect(component.container).toHaveTextContent(555)
   })
   test("renders blog title and author, not url and likes by default", () => {
-    const url = component.container.querySelector("urlDiv")
-    const likes = component.container.querySelector("likeDiv")
+    const url = component.container.querySelector("#urlDiv")
+    const likes = component.container.querySelector("#likeDiv")
     expect(url).not.toBeVisible()
     expect(likes).not.toBeVisible()
   })
