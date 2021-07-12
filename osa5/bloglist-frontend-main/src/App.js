@@ -13,9 +13,6 @@ const App = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState("")
-  const [author, setAuthor] = useState("")
-  const [url, setUrl] = useState("")
 
   const blogFormRef = useRef()
 
@@ -65,17 +62,13 @@ const App = () => {
     window.localStorage.removeItem("loggedBlogappUser")
   }
 
-  const addBlog = () => {
+  const addBlog = (blog) => {
     try {
       setTimeout(() => {
         setErrorMessage(null)
       }, 5000)
-      blogService.create({
-        title: title,
-        author: author,
-        url: url,
-      })
-      setErrorMessage("note added")
+      blogService.create(blog)
+      setErrorMessage("blog added")
       blogFormRef.current.toggleVisibility()
     } catch (error) {
       setErrorMessage("submit failed!")
@@ -122,15 +115,7 @@ const App = () => {
             log out
           </button>
           <Togglable buttonLabel="add a blog" ref={blogFormRef}>
-            <BlogForm
-              title={title}
-              setTitle={setTitle}
-              author={author}
-              setAuthor={setAuthor}
-              url={url}
-              setUrl={setUrl}
-              handleSubmit={addBlog}
-            />
+            <BlogForm handleSubmit={addBlog} />
           </Togglable>
           <h2>blogs</h2>
           {blogs.map((blog) => (
