@@ -1,5 +1,5 @@
 Cypress.Commands.add("login", ({ username, password }) => {
-  cy.request("POST", "http://localhost:3001/api/login", {
+  cy.request("POST", "http://localhost:3003/api/login", {
     username,
     password,
   }).then(({ body }) => {
@@ -8,17 +8,13 @@ Cypress.Commands.add("login", ({ username, password }) => {
   })
 })
 
-Cypress.Commands.add("createBlog", ({ content }) => {
-  cy.request({
-    url: "http://localhost:3001/api/notes",
-    method: "POST",
-    body: { content },
-    headers: {
-      Authorization: `bearer ${
-        JSON.parse(localStorage.getItem("loggedBoteappUser")).token
-      }`,
-    },
-  })
+Cypress.Commands.add("createBlog", (title, author, url) => {
+  cy.contains("add a blog").click()
+  cy.get("#title").type(title)
+  cy.get("#author").type(author)
+  cy.get("#url").type(url)
+
+  cy.get("#submit-button").click()
 
   cy.visit("http://localhost:3000")
 })

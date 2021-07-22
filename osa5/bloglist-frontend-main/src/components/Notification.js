@@ -6,6 +6,7 @@ const errStyle = {
 
 const Notification = ({ msg }) => (
   <div
+    className="error"
     style={{
       ...errStyle,
       visibility: msg ? "visible" : "hidden",
