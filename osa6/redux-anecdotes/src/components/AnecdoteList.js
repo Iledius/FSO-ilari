@@ -1,7 +1,7 @@
 import React from "react"
 import { voteAnecdote } from "../reducers/anecdoteReducer"
 import { setNotification } from "../reducers/notificationReducer"
-import Filter from "../components/filter"
+import Filter from "./Filter"
 import { useSelector, useDispatch } from "react-redux"
 
 const AnecdoteList = () => {
