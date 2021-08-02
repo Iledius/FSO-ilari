@@ -27,9 +27,19 @@ So far I've gone through:
 - Testing the backend
 - User administration
 -Token authentication
-## Part 5 - Testing React apps (in progress)
+## Part 5 - Testing React apps
 - Login in frontend
 - props.children and proptypes
 - Testing React apps
 - End to end testing
-
+## Part 6 - State management with Redux
+- Flux-architecture and Redux
+- Many reducers
+- Communicating with server in a redux application
+- connect
+## Part 7 - React router, custom hooks, styling app with CSS and webpack (in progress)
+- React-router
+- Custom hooks
+- More about styles
+- Webpack
+- Class components
