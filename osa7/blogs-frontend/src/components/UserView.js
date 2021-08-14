@@ -5,7 +5,6 @@ const UserView = ({ users }) => {
   let id = useParams().id
 
   let user = users.filter((u) => u.id === id)
-  console.log(user)
   if (user.length === 0) {
     return null
   }

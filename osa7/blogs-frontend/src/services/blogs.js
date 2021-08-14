@@ -21,6 +21,25 @@ const create = async (newObject) => {
   return response.data
 }
 
+const addComment = async (blog, comment) => {
+  const config = {
+    headers: { Authorization: token },
+    "Content-Type": JSON,
+  }
+  const content = { content: comment }
+  const response = await axios.post(
+    `${baseUrl}/${blog.id}/comments`,
+    content,
+    config
+  )
+  return response.data
+}
+
+const getComments = async (id) => {
+  const response = await axios.get(`${baseUrl}/${id}/comments`)
+  return response.data
+}
+
 const update = async (id, newObject) => {
   const config = {
     headers: { Authorization: token },
@@ -42,6 +61,15 @@ const getItem = async (id) => {
   return request
 }
 
-const blogService = { getAll, setToken, create, update, getItem, remove }
+const blogService = {
+  getAll,
+  setToken,
+  create,
+  update,
+  getItem,
+  remove,
+  addComment,
+  getComments,
+}
 
 export default blogService

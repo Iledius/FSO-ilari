@@ -12,6 +12,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 import UserView from "./components/UserView"
 import userService from "./services/users"
 import UsersList from "./components/UsersList"
+import BlogView from "./components/BlogView"
+import Navigation from "./components/Navigation"
 
 const App = () => {
   const [user, setUser] = useState(null)
@@ -23,6 +25,7 @@ const App = () => {
   useEffect(() => {
     dispatch(initBlogs())
   }, [dispatch])
+
   const blogs = useSelector((state) => state.blogs)
 
   useEffect(() => {
@@ -54,20 +57,16 @@ const App = () => {
     }
   }
 
-  const BlogView = () => {
-    return <div></div>
-  }
-
   blogs.sort((a, b) => b.likes - a.likes)
 
   return (
     <div>
-      <h1> BlogList </h1>
       <Notification />
       <Router>
+        <Navigation />
         <Switch>
           <Route path="/blogs/:id">
-            <BlogView blogs={blogs} user={user} />
+            <BlogView blogs={blogs} />
           </Route>
           <Route path="/users">
             <UsersList users={users} />

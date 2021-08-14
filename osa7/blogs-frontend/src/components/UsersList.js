@@ -7,15 +7,33 @@ const UsersList = ({ users }) => {
     return null
   }
 
+  const columnStyle = {
+    width: "100px",
+    float: "left",
+    padding: "10px",
+    border: "1px solid black",
+  }
+
   return (
-    <div>
+    <div style={{ width: "300px" }}>
       <h2>Users</h2>
       <div>
+        <div style={columnStyle}>Username</div>
+        <div style={columnStyle}>blogs created:</div>
+      </div>
+      <div>
         {users.map((user) => (
-          <Link to={`/user/${user.id}`} key={user.id}>
-            {user.name}
-          </Link>
-        ))}
+          <div key={user.id}>
+            <div style={columnStyle}>
+              <Link to={`/user/${user.id}`} key={user.id}>
+                {user.name}
+              </Link>
+            </div>
+            <div style={columnStyle}>
+              <p1>{user.blogs.length}</p1>
+            </div>
+          </div>
+        ))}{" "}
       </div>
     </div>
   )

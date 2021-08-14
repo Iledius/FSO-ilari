@@ -22,6 +22,13 @@ const blogReducer = (state = initialState, action) => {
       return newState
     }
 
+    case "COMMENT_BLOG": {
+      const newState = state
+        .filter((blog) => blog.id !== action.data.id)
+        .concat({ ...action.data, comments: action.data.comments })
+      return newState
+    }
+
     default:
       return state
   }
@@ -70,9 +77,23 @@ export const likeBlog = (blog) => {
   }
 }
 
+export const commentBlog = (blog, comment) => {
+  return async (dispatch) => {
+    // Updated blog is returned from backend.
+    // We'll need to use this for the dispatch, so that the state is also updated
+    const updatedBlog = blogService.addComment(blog, comment)
+
+    dispatch({
+      type: "COMMENT_BLOG",
+      data: {
+        content: updatedBlog,
+      },
+    })
+  }
+}
+
 export const removeBlog = (blog) => {
   return async (dispatch) => {
-    console.log(blog.id)
     blogService.remove(blog.id)
     dispatch({
       type: "REMOVE_BLOG",
