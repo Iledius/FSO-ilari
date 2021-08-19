@@ -1,4 +1,4 @@
-interface ExcerciseRating {
+export interface ExcerciseRating {
   periodLength: number;
   trainingDays: number;
   success: Boolean;
@@ -17,9 +17,9 @@ const calculateExercises = (
   const success = exercise.filter((e) => e > target).length / totalDays === 1;
 
   enum rating {
-    "bad",
-    "decent",
-    "good",
+    'bad',
+    'decent',
+    'good',
   }
 
   return {
@@ -33,10 +33,4 @@ const calculateExercises = (
   };
 };
 
-const excerciseLog: Array<number> = process.argv
-  .slice(0, process.argv.length - 2)
-  .map((e) => Number(e));
-
-const targetHours: number = Number(process.argv[process.argv.length - 1]);
-
-console.log(calculateExercises(excerciseLog, targetHours));
+export default calculateExercises;
