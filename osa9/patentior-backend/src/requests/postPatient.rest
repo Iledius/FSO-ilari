@@ -1,0 +1,10 @@
+post http://localhost:3001/api/patients
+Content-Type: application/json
+
+{
+    "name": "asd",
+    "dateOfBirth": "a123",
+    "ssn": "asd",
+    "gender": 0,
+    "occupation": "asd"
+}
