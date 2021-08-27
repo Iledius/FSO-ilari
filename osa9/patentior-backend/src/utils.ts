@@ -1,4 +1,4 @@
-import { NewPatientEntry } from "./types";
+import { Entry, NewPatientEntry } from "./types";
 import { Gender } from "./types";
 
 const isString = (text: any): text is string => {
@@ -51,6 +51,13 @@ const parseDate = (date: any): string => {
   return date;
 };
 
+const parseEntries = (entries: any): Entry[] => {
+  if (!entries || !Array.isArray(entries)) {
+    throw new Error(`Incorrect or missing entries: ${entries}`);
+  }
+  return entries;
+};
+
 export const toNewPatientEntry = (patient: any): NewPatientEntry => {
   const newEntry: NewPatientEntry = {
     name: parseName(patient.name),
@@ -58,6 +65,7 @@ export const toNewPatientEntry = (patient: any): NewPatientEntry => {
     ssn: parseSsn(patient.ssn),
     gender: parseGender(patient.gender),
     occupation: parseOccupation(patient.occupation),
+    entries: parseEntries(patient.entries),
   };
   return newEntry;
 };

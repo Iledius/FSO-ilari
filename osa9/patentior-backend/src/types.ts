@@ -1,22 +1,23 @@
 export enum Gender {
-  male = "male",
-  female = "female",
-  other = "other",
+  Male = "male",
+  Female = "female",
+  Other = "other",
 }
 
 export interface Patient {
   id: string;
   name: string;
-  dateOfBirth: string;
   ssn: string;
-  gender: Gender;
   occupation: string;
+  gender: Gender;
+  dateOfBirth: string;
+  entries: Entry[];
 }
 
-export type PatientNoSSN = Omit<Patient, "ssn">;
+export type PublicPatient = Omit<Patient, "ssn" | "entries">;
 
-export interface PatientNoSSNArray {
-  [index: number]: PatientNoSSN;
+export interface PublicPatientArray {
+  [index: number]: PublicPatient;
 }
 
 export interface PatientArray {
@@ -34,3 +35,47 @@ export interface Diagnosis {
 export interface DiagnosisArray {
   [index: number]: Partial<Diagnosis>;
 }
+
+export type EntryType = "Hospital" | "OccupationalHealthcare" | "HealthCheck";
+
+export enum HealthCheckRating {
+  "Healthy",
+  "LowRisk",
+  "HighRisk",
+  "CriticalRisk",
+}
+
+export interface EntryBase {
+  id: string;
+  description: string;
+  date: string;
+  specialist: string;
+  diagnosisCodes?: Array<Diagnosis["code"]>;
+}
+
+export interface OccupationalHealthcareEntry extends EntryBase {
+  type: "OccupationalHealthcare";
+  employerName: string;
+  sickLeave?: {
+    startDate: string;
+    endDate: string;
+  };
+}
+
+export interface HospitalEntry extends EntryBase {
+  type: "Hospital";
+  discharge?: {
+    date: string;
+    criteria: string;
+  };
+}
+
+export interface HealthCheckEntry extends EntryBase {
+  type: "HealthCheck";
+  healthCheckRating: HealthCheckRating;
+}
+
+export type Entry =
+  | HospitalEntry
+  | OccupationalHealthcareEntry
+  | HealthCheckEntry;

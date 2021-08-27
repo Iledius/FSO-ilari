@@ -1,20 +1,22 @@
-import patientData from "../../data/patients.json";
+import patientData from "../../data/patients";
 import {
-  PatientNoSSNArray,
+  PublicPatientArray,
   PatientArray,
   NewPatientEntry,
   Gender,
+  Patient,
+  Entry,
 } from "../types";
 import { v1 as uuid } from "uuid";
 import { toNewPatientEntry } from "../utils";
 
-const getEntries = (): PatientArray => {
+const getPatients = (): PatientArray => {
   return patientData.map((p) => {
     return { ...p, gender: p.gender as Gender };
   });
 };
 
-const getNonSensitiveEntries = (): PatientNoSSNArray => {
+const getNonSensitivePatients = (): PublicPatientArray => {
   return patientData.map((patient) => {
     return {
       id: patient.id,
@@ -22,6 +24,7 @@ const getNonSensitiveEntries = (): PatientNoSSNArray => {
       dateOfBirth: patient.dateOfBirth,
       gender: patient.gender as Gender,
       occupation: patient.occupation,
+      entries: patient.entries,
     };
   });
 };
@@ -29,15 +32,33 @@ const getNonSensitiveEntries = (): PatientNoSSNArray => {
 const addPatient = (patient: NewPatientEntry) => {
   const newID = uuid();
   const newPatientEntry = { id: newID, ...toNewPatientEntry(patient) };
-  patientData.push(newPatientEntry);
 
   return newPatientEntry;
 };
 
+const findById = (id: string): Patient | undefined => {
+  const patient = patientData.find((p) => p.id === id);
+  if (patient) {
+    return { ...patient, gender: patient.gender as Gender };
+  }
+  return undefined;
+};
+
+const addEntry = (id: string, entry: Entry): boolean => {
+  const patient = patientData.find((p) => p.id === id);
+  if (patient) {
+    patient.entries.push(entry);
+    return true;
+  }
+  return false;
+};
+
 const patientService = {
-  getEntries,
-  getNonSensitiveEntries,
+  getPatients,
+  getNonSensitivePatients,
   addPatient,
+  findById,
+  addEntry,
 };
 
 export default patientService;
