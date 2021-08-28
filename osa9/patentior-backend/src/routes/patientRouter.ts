@@ -6,6 +6,7 @@ import {
   NewPatientEntry,
   Patient,
 } from "../types";
+import { v4 as uuidv4 } from "uuid";
 
 const router = express.Router();
 
@@ -43,9 +44,11 @@ router.post("/", (req, res) => {
 
 router.post("/:id/entries", (req, res) => {
   const id = req.params.id;
-  console.log(req.body);
 
   const { entry } = req.body;
+  entry.id = uuidv4();
+  console.log(entry);
+
   // Check if entry contains all required fields
   if (
     !entry.type ||
@@ -58,20 +61,20 @@ router.post("/:id/entries", (req, res) => {
   }
 
   if (entry.type === "HealthCheck") {
-    if (!entry.healthCheckRating) {
-      console.log("Skipped checking required fields for entry ");
+    if (!entry.healthCheckRating && entry.healthCheckRating !== 0) {
+      console.log("Missing healthCheckRating");
 
-      //res.status(400).send("Missing required fields");
+      res.status(400).send("Missing required fields").end();
     }
   }
   if (entry.type === "Hospital") {
     if (!entry.discharge.date || !entry.discharge.criteria) {
-      res.status(400).send("Missing required fields");
+      res.status(400).send("Missing required fields").end();
     }
   }
   if (entry.type === "OccupationalHealthcare") {
     if (!entry.sickLeave.startDate || !entry.sickLeave.endDate) {
-      res.status(400).send("Missing required fields");
+      res.status(400).send("Missing required fields").end();
     }
   }
 

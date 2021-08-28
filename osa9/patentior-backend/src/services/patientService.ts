@@ -46,6 +46,7 @@ const findById = (id: string): Patient | undefined => {
 
 const addEntry = (id: string, entry: Entry): boolean => {
   const patient = patientData.find((p) => p.id === id);
+
   if (patient) {
     patient.entries.push(entry);
     return true;
