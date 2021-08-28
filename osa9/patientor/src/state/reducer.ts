@@ -76,7 +76,7 @@ export const reducer = (state: State, action: Action): State => {
     case "ADD_ENTRY":
       const { patientId, entry } = action.payload;
       const patient: Patient = state.patients[patientId];
-      console.log(patient);
+      console.log(entry);
 
       axios
         .post(`http://localhost:3001/api/patients/${patientId}/entries`, {

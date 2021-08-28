@@ -1,5 +1,5 @@
 import React from "react";
-import { Icon, Table } from "semantic-ui-react";
+import { Icon, List, Table } from "semantic-ui-react";
 import { Diagnosis, Entry } from "../../types";
 
 const EntryComponent = ({
@@ -25,33 +25,33 @@ const EntryComponent = ({
       icon = "";
   }
 
-  console.log(icon);
-
   return (
-    <Table>
-      <Table.Header>
-        <Table.Row>
-          <Table.HeaderCell>
-            <Icon className={icon} />
-            Date: {entry.date}
-          </Table.HeaderCell>
-          <Table.HeaderCell>Specialist: {entry.specialist}</Table.HeaderCell>
-        </Table.Row>
-        <Table.HeaderCell colSpan="3">{entry.description}</Table.HeaderCell>
-      </Table.Header>
-
-      <ul>
-        {entry.diagnosisCodes?.map((d: string) => (
-          <li key={d}>
-            {`${d} `}
-            {
-              diagnoses.find((diagnosis: Diagnosis) => diagnosis.code === d)
-                ?.name
-            }
-          </li>
-        ))}
-      </ul>
-    </Table>
+    <div>
+      <Table>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell>
+              <Icon className={icon} />
+              Date: {entry.date}
+            </Table.HeaderCell>
+            <Table.HeaderCell>Specialist: {entry.specialist}</Table.HeaderCell>
+          </Table.Row>
+          <Table.HeaderCell colSpan="3">{entry.description}</Table.HeaderCell>
+        </Table.Header>
+        <List>
+          <List.Header>Diagnoses:</List.Header>
+          {entry.diagnosisCodes?.map((d: string) => (
+            <List.Item key={d}>
+              {`${d} `}
+              {
+                diagnoses.find((diagnosis: Diagnosis) => diagnosis.code === d)
+                  ?.name
+              }
+            </List.Item>
+          ))}
+        </List>
+      </Table>
+    </div>
   );
 };
 

@@ -13,8 +13,6 @@ import PatientInfo from "./components/PatientInfo";
 const App = () => {
   const [, dispatch] = useStateValue();
   React.useEffect(() => {
-    void axios.get<void>(`${apiBaseUrl}/ping`);
-
     const fetchDiagnoses = async () => {
       try {
         const { data: diagnosesFromApi } = await axios.get<Diagnosis[]>(

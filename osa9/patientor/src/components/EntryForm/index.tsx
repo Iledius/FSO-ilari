@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import { Form } from "semantic-ui-react";
-import { addEntry, useStateValue } from "../../state";
-import { Diagnosis, Entry, EntryBase } from "../../types";
+import { Diagnosis } from "../../types";
+import HealthCheckEntryForm from "./HealthCheckEntry";
+import HospitalEntryForm from "./HospitalEntry";
+import OccupationalEntryForm from "./OccupationalEntry";
 // Form for adding new entries
 const EntryForm = ({
   diagnoses,
@@ -10,65 +12,52 @@ const EntryForm = ({
   diagnoses: Diagnosis[];
   patientId: string;
 }) => {
-  const [, dispatch] = useStateValue();
-  const [
-    { id = "placeholder", description, date, specialist, diagnosisCodes },
-    setState,
-  ] = useState<EntryBase>({
-    id: "",
-    description: "",
-    date: "",
-    specialist: "",
-    diagnosisCodes: [],
-  });
-
-  const handleSubmit = () => {
-    const date = new Date().toDateString();
-    const newEntry: Entry = {
-      id,
-      description,
-      date: date,
-      specialist,
-      diagnosisCodes,
-      type: "HealthCheck",
-      healthCheckRating: 0,
-    };
-    dispatch(addEntry(patientId, newEntry));
-  };
+  const [entryType, setEntryType] = useState<string>("");
 
   const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
     const { name, value } = e.currentTarget;
-    const state = { id, description, date, specialist, diagnosisCodes };
-    console.log(name, value);
 
-    setState({ ...state, [name]: value });
+    if (name === "Type") {
+      console.log(value);
+      setEntryType(value);
+
+      return;
+    }
+  };
+
+  const CustomForm = () => {
+    switch (entryType) {
+      case "HealthCheck":
+        return (
+          <HealthCheckEntryForm diagnoses={diagnoses} patientId={patientId} />
+        );
+      case "Hospital":
+        return (
+          <HospitalEntryForm diagnoses={diagnoses} patientId={patientId} />
+        );
+      case "OccupationalHealthcare":
+        return (
+          <OccupationalEntryForm diagnoses={diagnoses} patientId={patientId} />
+        );
+      default:
+        return <p>Please choose a value</p>;
+    }
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group widths="equal">
-        <Form.Input
-          name="specialist"
-          onChange={handleChange}
-          label="Specialist name"
-          control="input"
-        />
-        <Form.Input onChange={handleChange} label="Diagnosis" control="select">
-          {diagnoses.map((diagnosis) => (
-            <option value={diagnosis.code} key={diagnosis.code} />
-          ))}
-        </Form.Input>
-      </Form.Group>
-
+    <div>
       <Form.Input
-        name="description"
+        name="Type"
         onChange={handleChange}
-        label="Description"
-        control="textarea"
-        rows="4"
-      />
-      <Form.Field control="button">Submit entry</Form.Field>
-    </Form>
+        label="Type"
+        control="select"
+      >
+        <option value="Hospital" />
+        <option value="HealthCheck" />
+        <option value="OccupationalHealthcare" />
+      </Form.Input>
+      <CustomForm />
+    </div>
   );
 };
 
