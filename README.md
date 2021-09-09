@@ -37,9 +37,14 @@ So far I've gone through:
 - Many reducers
 - Communicating with server in a redux application
 - connect
-## Part 7 - React router, custom hooks, styling app with CSS and webpack (in progress)
+## Part 7 - React router, custom hooks, styling app with CSS and webpack
 - React-router
 - Custom hooks
 - More about styles
 - Webpack
 - Class components
+## Part 9 - Typescript
+- Background and introduction
+- First steps with TypeScript
+- Typing the express app
+- React with types
